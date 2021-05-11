@@ -7,6 +7,7 @@ function add_to_cart(pId, pName, pPrice)
         let product = {productId: pId, productName: pName, productPrice: pPrice, productQuantity: 1};
         products.push(product);
         localStorage.setItem("cart", JSON.stringify(products));
+        showToast("Product is added to cart");
     } else {
         //cart is already present
         let pCart = JSON.parse(cart); //pcart is an array
@@ -23,12 +24,14 @@ function add_to_cart(pId, pName, pPrice)
                 }
             })
             localStorage.setItem("cart", JSON.stringify(pCart));
+            showToast(oldProduct.productName+" Quantity is Increased");
         } else {
             // New Product Added
             let product = {productId: pId, productName: pName, productPrice: pPrice, productQuantity: 1};
             pCart.push(product);
             localStorage.setItem("cart", JSON.stringify(pCart));
-            //console.log("Product Added");
+            showToast("Product is added to cart");
+        //console.log("Product Added");
         }
     }
     updateCart();
@@ -87,7 +90,7 @@ function deleteItemFromCart(pId)
     let newCart=cart.filter((item => item.productId !=pId))
     localStorage.setItem('cart',JSON.stringify(newCart))
     updateCart();
-    
+    showToast("Product is removed from cart");    
 }
 function goToCheckout(){
     window.location="checkout.jsp";
@@ -97,3 +100,11 @@ function goToCheckout(){
 $(document).ready(function () {
     updateCart();
 })
+
+function showToast(content){
+                $('#toast').addClass("display");
+                $('#toast').html(content);
+                setTimeout(()=>{
+                    $('#toast').removeClass("display")
+                },2000)
+            }
